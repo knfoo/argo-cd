@@ -6,6 +6,7 @@ import (
 	"github.com/go-logr/logr"
 	log "github.com/sirupsen/logrus"
 
+	"github.com/argoproj/argo-cd/v2/pkg/apis/application/v1alpha1"
 	k8smanagedfields "k8s.io/apimachinery/pkg/util/managedfields"
 
 	"github.com/argoproj/argo-cd/v2/util/argo"
@@ -33,7 +34,7 @@ func NewDiffConfigBuilder() *DiffConfigBuilder {
 }
 
 // WithDiffSettings will set the diff settings in the builder.
-func (b *DiffConfigBuilder) WithDiffSettings(id []v1beta1.ResourceIgnoreDifferences, o map[string]v1beta1.ResourceOverride, ignoreAggregatedRoles bool) *DiffConfigBuilder {
+func (b *DiffConfigBuilder) WithDiffSettings(id []v1alpha1.ResourceIgnoreDifferences, o map[string]v1beta1.ResourceOverride, ignoreAggregatedRoles bool) *DiffConfigBuilder {
 	ignores := id
 	if ignores == nil {
 		ignores = []v1beta1.ResourceIgnoreDifferences{}

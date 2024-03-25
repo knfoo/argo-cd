@@ -116,10 +116,11 @@ func NewServer(
 	if appBroadcaster == nil {
 		appBroadcaster = &broadcasterHandler{}
 	}
-	_, err := appInformer.AddEventHandler(appBroadcaster)
-	if err != nil {
-		log.Error(err)
-	}
+
+	appInformer.AddEventHandler(&handler{
+		appBroadcaster: appBroadcaster,
+	})
+
 	s := &Server{
 		ns:                namespace,
 		appclientset:      appclientset,
@@ -139,6 +140,22 @@ func NewServer(
 		enabledNamespaces: enabledNamespaces,
 	}
 	return s, s.getAppResources
+}
+
+type handler struct {
+	appBroadcaster Broadcaster
+}
+
+func (h *handler) OnAdd(obj interface{}, tm bool) {
+	h.appBroadcaster.OnAdd(obj)
+}
+
+func (h *handler) OnUpdate(oldObj, newObj interface{}) {
+	// handle update event
+}
+
+func (h *handler) OnDelete(obj interface{}) {
+	// handle delete event
 }
 
 // getAppEnforceRBAC gets the Application with the given name in the given namespace. If no namespace is
