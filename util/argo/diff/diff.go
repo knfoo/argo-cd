@@ -8,7 +8,6 @@ import (
 
 	k8smanagedfields "k8s.io/apimachinery/pkg/util/managedfields"
 
-	"github.com/argoproj/argo-cd/v2/pkg/apis/application/v1alpha1"
 	"github.com/argoproj/argo-cd/v2/util/argo"
 	"github.com/argoproj/argo-cd/v2/util/argo/managedfields"
 	appstatecache "github.com/argoproj/argo-cd/v2/util/cache/appstate"
@@ -34,16 +33,16 @@ func NewDiffConfigBuilder() *DiffConfigBuilder {
 }
 
 // WithDiffSettings will set the diff settings in the builder.
-func (b *DiffConfigBuilder) WithDiffSettings(id []v1alpha1.ResourceIgnoreDifferences, o map[string]v1alpha1.ResourceOverride, ignoreAggregatedRoles bool) *DiffConfigBuilder {
+func (b *DiffConfigBuilder) WithDiffSettings(id []v1beta1.ResourceIgnoreDifferences, o map[string]v1beta1.ResourceOverride, ignoreAggregatedRoles bool) *DiffConfigBuilder {
 	ignores := id
 	if ignores == nil {
-		ignores = []v1alpha1.ResourceIgnoreDifferences{}
+		ignores = []v1beta1.ResourceIgnoreDifferences{}
 	}
 	b.diffConfig.ignores = ignores
 
 	overrides := o
 	if overrides == nil {
-		overrides = make(map[string]v1alpha1.ResourceOverride)
+		overrides = make(map[string]v1beta1.ResourceOverride)
 	}
 	b.diffConfig.overrides = overrides
 	b.diffConfig.ignoreAggregatedRoles = ignoreAggregatedRoles
@@ -130,12 +129,12 @@ type DiffConfig interface {
 	Validate() error
 	// DiffFromCache will verify if it should retrieve the cached ResourceDiff based on this
 	// DiffConfig.
-	DiffFromCache(appName string) (bool, []*v1alpha1.ResourceDiff)
+	DiffFromCache(appName string) (bool, []*v1beta1.ResourceDiff)
 	// Ignores Application level ignore difference configurations.
-	Ignores() []v1alpha1.ResourceIgnoreDifferences
+	Ignores() []v1beta1.ResourceIgnoreDifferences
 	// Overrides is map of system configurations to override the Application ones.
 	// The key should follow the "group/kind" format.
-	Overrides() map[string]v1alpha1.ResourceOverride
+	Overrides() map[string]v1beta1.ResourceOverride
 	AppLabelKey() string
 	TrackingMethod() string
 	// AppName the Application name. Used to retrieve the cached diff.
@@ -165,8 +164,8 @@ type DiffConfig interface {
 
 // diffConfig defines the configurations used while applying diffs.
 type diffConfig struct {
-	ignores               []v1alpha1.ResourceIgnoreDifferences
-	overrides             map[string]v1alpha1.ResourceOverride
+	ignores               []v1beta1.ResourceIgnoreDifferences
+	overrides             map[string]v1beta1.ResourceOverride
 	appLabelKey           string
 	trackingMethod        string
 	appName               string
@@ -182,10 +181,10 @@ type diffConfig struct {
 	ignoreMutationWebhook bool
 }
 
-func (c *diffConfig) Ignores() []v1alpha1.ResourceIgnoreDifferences {
+func (c *diffConfig) Ignores() []v1beta1.ResourceIgnoreDifferences {
 	return c.ignores
 }
-func (c *diffConfig) Overrides() map[string]v1alpha1.ResourceOverride {
+func (c *diffConfig) Overrides() map[string]v1beta1.ResourceOverride {
 	return c.overrides
 }
 func (c *diffConfig) AppLabelKey() string {
@@ -314,13 +313,13 @@ func StateDiffs(lives, configs []*unstructured.Unstructured, diffConfig DiffConf
 	return array, nil
 }
 
-func diffArrayCached(configArray []*unstructured.Unstructured, liveArray []*unstructured.Unstructured, cachedDiff []*v1alpha1.ResourceDiff, opts ...diff.Option) (*diff.DiffResultList, error) {
+func diffArrayCached(configArray []*unstructured.Unstructured, liveArray []*unstructured.Unstructured, cachedDiff []*v1beta1.ResourceDiff, opts ...diff.Option) (*diff.DiffResultList, error) {
 	numItems := len(configArray)
 	if len(liveArray) != numItems {
 		return nil, fmt.Errorf("left and right arrays have mismatched lengths")
 	}
 
-	diffByKey := map[kube.ResourceKey]*v1alpha1.ResourceDiff{}
+	diffByKey := map[kube.ResourceKey]*v1beta1.ResourceDiff{}
 	for _, res := range cachedDiff {
 		diffByKey[kube.NewResourceKey(res.Group, res.Kind, res.Namespace, res.Name)] = res
 	}
@@ -368,11 +367,11 @@ func diffArrayCached(configArray []*unstructured.Unstructured, liveArray []*unst
 // DiffFromCache will verify if it should retrieve the cached ResourceDiff based on this
 // DiffConfig. Returns true and the cached ResourceDiff if configured to use the cache.
 // Returns false and nil otherwise.
-func (c *diffConfig) DiffFromCache(appName string) (bool, []*v1alpha1.ResourceDiff) {
+func (c *diffConfig) DiffFromCache(appName string) (bool, []*v1beta1.ResourceDiff) {
 	if c.noCache || c.stateCache == nil || appName == "" {
 		return false, nil
 	}
-	cachedDiff := make([]*v1alpha1.ResourceDiff, 0)
+	cachedDiff := make([]*v1beta1.ResourceDiff, 0)
 	if c.stateCache != nil {
 		err := c.stateCache.GetAppManagedResources(appName, &cachedDiff)
 		if err != nil {
