@@ -4,7 +4,7 @@ go 1.21
 
 toolchain go1.21.0
 
-replace github.com/argoproj/gitops-engine => github.com/knfoo/gitops-engine v0.7.3-20240325.1
+replace github.com/argoproj/gitops-engine => github.com/knfoo/gitops-engine v0.7.3-20240325.2
 
 require (
 	code.gitea.io/sdk/gitea v0.15.1

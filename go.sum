@@ -1350,8 +1350,8 @@ github.com/klauspost/cpuid/v2 v2.0.1/go.mod h1:FInQzS24/EEf25PyTYn52gqo7WaD8xa02
 github.com/klauspost/cpuid/v2 v2.0.9/go.mod h1:FInQzS24/EEf25PyTYn52gqo7WaD8xa0213Md/qVLRg=
 github.com/klauspost/cpuid/v2 v2.2.3/go.mod h1:RVVoqg1df56z8g3pUjL/3lE5UfnlrJX8tyFgg4nqhuY=
 github.com/klauspost/cpuid/v2 v2.2.4/go.mod h1:RVVoqg1df56z8g3pUjL/3lE5UfnlrJX8tyFgg4nqhuY=
-github.com/knfoo/gitops-engine v0.7.3-20240325.1 h1:SiiV5EGLJfbu2WVR4pX21r4lg38wokWzbcQVosJK68M=
-github.com/knfoo/gitops-engine v0.7.3-20240325.1/go.mod h1:SkHpo0SSP1ZnwtdVXmcTLLddyuzuSlq8FnHk7KCUaeY=
+github.com/knfoo/gitops-engine v0.7.3-20240325.2 h1:bKWLVranUAbrF9cC2ZrhjfeC3pxwe6NAFCENEwHp+H8=
+github.com/knfoo/gitops-engine v0.7.3-20240325.2/go.mod h1:yihhfcxMirgkHLG5h2gebW9JKbe7XX4E6M5njl20wUs=
 github.com/konsorten/go-windows-terminal-sequences v1.0.1/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
 github.com/konsorten/go-windows-terminal-sequences v1.0.2/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
 github.com/konsorten/go-windows-terminal-sequences v1.0.3/go.mod h1:T0+1ngSBFLxvqU3pZ+m/2kptfBszLMUkC4ZK/EgS/cQ=
